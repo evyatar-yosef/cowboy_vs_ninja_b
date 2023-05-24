@@ -10,10 +10,14 @@ public:
      SmartTeam();
 
      ~SmartTeam();
+       SmartTeam(const SmartTeam&) = default;                    // Copy constructor
+    SmartTeam& operator=(const SmartTeam&) = default;         // Copy assignment operator
+    SmartTeam(SmartTeam&&) = default;                         // Move constructor
+    SmartTeam& operator=(SmartTeam&&) = default;              // Move assignment operator
 
-    void add(Character* character) ;
+
    void attack(Team* enemy_team) ;
-   int stillAlive() ;
-    void print() ;
+
+
 };
 }

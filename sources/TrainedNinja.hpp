@@ -9,7 +9,7 @@ class TrainedNinja : public Ninja{
 public:
     TrainedNinja(std::string name, Point location);
     TrainedNinja();
-    std::string print();
+    std::string print() override;
 
 
 

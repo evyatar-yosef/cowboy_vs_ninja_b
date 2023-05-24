@@ -30,24 +30,3 @@ using namespace ariel;
        character->inPlay = true;
 }
     }
-    // void Team2:: attack(Team* enemy_team) {}
-
-int Team2::stillAlive() 
-{
-    int charactersAlive = 0;
-    if (!characters.empty())
-    { 
-        for(std::size_t i = 0; i < characters.size();i++)
-     {
-
-        if(characters[i]->isAlive() ) charactersAlive ++;
-     }
-    }
-    
-    
-     return charactersAlive;
-}
-
-        
-  //  void Team2:: print() {}
-

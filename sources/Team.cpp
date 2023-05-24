@@ -146,23 +146,7 @@ void Team::attack(Team* enemy_team)
         {
              if (victim && victim->isAlive()&& enemy_team->stillAlive() > 0)
     {
-       // bool leaderChanged = (leader->getLocation().getX() != leader_position.getX()) || (leader->getLocation().getY() != leader_position.getY());
-
-    //     if (!victim->isAlive() || leaderChanged)
-    //     {
-    //         closestDistance = std::numeric_limits<double>::max();
-
-    //  for (auto enemyCharacter : enemy_team->characters)
-    //         {
-    //             if (enemyCharacter->isAlive() && leader->distance(enemyCharacter) < closestDistance)
-    //             {
-    //                 closestDistance = leader->distance(enemyCharacter);
-    //                 victim = enemyCharacter;
-    //             }
-    //         }
-    //     }
-            
-            if (character->isAlive())
+      if (character->isAlive())
             {
                 Cowboy* cowboy = dynamic_cast<Cowboy*>(character);
                 Ninja* ninja = dynamic_cast<Ninja*>(character);
@@ -276,46 +260,3 @@ Character* Team::findClosestCharacter(Character* myLeader) {
 
     return closestCharacter;
 }
-// for (auto character : characters)
-// {
-//     Cowboy* cowboy = dynamic_cast<Cowboy*>(character);
-//     if (cowboy && cowboy->hasboolets() && cowboy->isAlive())
-//     {
-//         if (cowboy)
-//                 {
-//                     if (cowboy->hasboolets() && cowboy->isAlive())
-//                     {
-//                         if (victim->isAlive()) // Ignore dead enemies
-//                         {
-//                             cowboy->shoot(victim);
-//                         }
-//                     }
-//                     else
-//                     {
-//                         cowboy->reload();
-//                     }
-//                 }
-//     }
-// }
-
-// for (auto character : characters)
-// {
-//     Ninja* ninja = dynamic_cast<Ninja*>(character);
-//     if (ninja && ninja->isAlive())
-//     {
-//        if (ninja)
-//                 {
-//                     if (ninja->distance(victim) <= 1)
-//                     {
-//                         if (victim->isAlive()) // Ignore dead enemies
-//                         {
-//                             ninja->slash(victim);
-//                         }
-//                     }
-//                     else
-//                     {
-//                         ninja->move(victim);
-//                     }
-//                 }
-//     }
-// }

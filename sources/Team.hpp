@@ -13,10 +13,10 @@ class Team {
     public:
         Team(Character* leader);
          Team();
-        // Team(const Team&) = default;
-        // Team& operator=(const Team&) = default;
-        // Team(Team&&) = default;
-        // Team& operator=(Team&&) = default;
+        Team(const Team&) = default;
+        Team& operator=(const Team&) = default;
+        Team(Team&&) = default;
+        Team& operator=(Team&&) = default;
         ~Team();
 
         void add(Character* character);
@@ -25,12 +25,12 @@ class Team {
         void print();
         std::vector<Character*> characters;
 
+        Character* leader;
 
         int numCowboys;
         int numNinjas;
     private:
-       // std::vector<Character*> characters;
-        Character* leader;
+    //    std::vector<Character*> characters;
 
 Character* findClosestCharacter(Character* myLeader) ;
 

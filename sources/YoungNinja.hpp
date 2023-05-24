@@ -10,7 +10,7 @@ class YoungNinja : public Ninja{
 public:
     YoungNinja(std::string name, Point location);
     YoungNinja();
-    std::string print();
+    std::string print() override;
 
     //int demage_point;
 
