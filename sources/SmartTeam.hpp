@@ -6,10 +6,10 @@
 
 class SmartTeam : public Team {
 public:
-    // SmartTeam(Character* leader);
-    // SmartTeam();
+     SmartTeam(Character* leader);
+     SmartTeam();
 
-    // ~SmartTeam();
+     ~SmartTeam();
 
     void add(Character* character) ;
    void attack(Team* enemy_team) ;

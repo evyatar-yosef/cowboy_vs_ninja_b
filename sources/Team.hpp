@@ -32,6 +32,7 @@ class Team {
        // std::vector<Character*> characters;
         Character* leader;
 
+Character* findClosestCharacter(Character* myLeader) ;
 
 
 };

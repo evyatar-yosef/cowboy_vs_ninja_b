@@ -321,7 +321,6 @@ TEST_SUITE("Battle related methods") {
         OldNinja ninja2{"Bob", Point{2, 2}};
           
        
-                std::cout<<"222222"<<std::endl;
 
         // These attacks should have no affect
         for (int i = 0; i < 20; i++) 
@@ -339,7 +338,6 @@ TEST_SUITE("Battle related methods") {
             old.slash(&ninja);
             young.slash(&ninja);
         }
-                std::cout<<"444444"<<std::endl;
 
         CHECK(ninja.isAlive());
         CHECK(ninja2.isAlive());
@@ -391,11 +389,9 @@ TEST_SUITE("Battle related methods") {
         auto ninja = create_tninja();
         Team team{cowboy};
         Team2 team2{ninja};
-        std::cout<<"herererer"<<std::endl;
       
         CHECK_THROWS_AS(team.attack(nullptr), std::invalid_argument);
         CHECK_THROWS_AS(team2.attack(nullptr), std::invalid_argument);
-                std::cout<<"herererer"<<std::endl;
 
     }
 
@@ -484,15 +480,13 @@ TEST_SUITE("Battle simulations") {
 	    team2.add(cowboy3);
 
         CHECK_EQ(team2.stillAlive(), 7);
-                      std::cout<<"beforeeee"<<std::endl;
 
-       
+       std::cout<<"train:: "<<trained_ninja->isAlive()<<std::endl;
         multi_attack(2, team, team2);
         CHECK_FALSE(young_ninja->isAlive()); // Young ninja should be dead
         CHECK((trained_ninja->isAlive() && old_ninja->isAlive() &&
                young_ninja2->isAlive())); // Everyone else should still be alive
 
-                      std::cout<<"beforeeee"<<std::endl;
 
              
 
@@ -505,30 +499,59 @@ TEST_SUITE("Battle simulations") {
        
                 multi_attack(2, team, team2);
         CHECK_FALSE(trained_ninja->isAlive()); // Trained ninja should be dead
-              std::cout<<trained_ninja->isAlive()<<std::endl;
-              std::cout<<old_ninja->isAlive()<<std::endl;
-              std::cout<<old_ninja->hit_points<<std::endl;
-
+            
 
 
         CHECK((!old_ninja->isAlive() && young_ninja2->isAlive()));
-        std::cout<<old_ninja->isAlive()<<std::endl;
-        std::cout<<young_ninja2->isAlive()<<std::endl;
-
+        
 
         multi_attack(4, team, team2);
-        std::cout<<old_ninja->isAlive()<<std::endl;
-        std::cout<<old_ninja->hit_points<<std::endl;
-
         CHECK_FALSE(old_ninja->isAlive()); // Old ninja should be dead
         CHECK(!young_ninja2->isAlive());
+    int aliveCount = 0;
+    for (auto character : team2.characters)
+    {
+        if (character->isAlive())
+        {
+            aliveCount++;
+        }
+    }
+    std::cout << "Number of characters alive in team2: " << aliveCount << std::endl;
+        std::cout << "Number of characters alive in team2: " << team2.stillAlive() << std::endl;
 
         multi_attack(2, team, team2);
+//         std::cout << "Alive characters in team2: ";
+// int aliveCount = 0;
+//     for (auto character : team2.characters)
+//     {
+//         if (character->isAlive())
+//         {
+//             character->print();
+//             aliveCount++;
+//         }
+//     }
+    // std::cout << "Number of characters alive in team2: " << aliveCount << std::endl;
+    //     std::cout << "Number of characters alive in team2: " << team2.stillAlive() << std::endl;
+
         CHECK_NOTHROW(team.attack(
                 &team2)); // The entire enemy team will be dead before every cowboy shoots, the attack should stop and not throw an exception
         CHECK_FALSE(young_ninja2->isAlive()); // Young ninja should be dead
         CHECK_THROWS_AS(team.attack(&team2), std::runtime_error); // Attacking a dead team should throw an exception
-    }
+   
+//    std::cout << "Alive characters in team2: ";
+// int aliveCount = 0;
+//     for (auto character : team2.characters)
+//     {
+//         if (character->isAlive())
+//         {
+//             aliveCount++;
+//         }
+//     }
+//     std::cout << "Number of characters alive in team2: " << aliveCount << std::endl;
+//         std::cout << "Number of characters alive in team2: " << team2.stillAlive() << std::endl;
+
+
+       }
 
     /*
      * In this test only cowboys are used because they are stationary. This allows us to better keep track of everyone's position to better test for captains assignment.
@@ -559,10 +582,17 @@ TEST_SUITE("Battle simulations") {
         // The captain of team2 is the closest enemy to the captain of team1, and therefore should be dead.
         CHECK((!team2_c2->isAlive() && team2_c1->isAlive() && team2_c3->isAlive() && team2_c4->isAlive()));
 
+        
+           std::cout<<"c3:: "<<team_c3->isAlive()<<std::endl;
+        std::cout<<"c2:: "<<team_c2->isAlive()<<std::endl;
+        std::cout<<"c1:: "<<team_c1->isAlive()<<std::endl;
+
         // At this point, the captain should be team2_c3; hence, the next enemy to be attacked by team2 should team_c3.
         multi_attack(6, team2, team1);
         CHECK((!team_c3->isAlive() && team_c1->isAlive() && team_c2->isAlive()));
-
+        // std::cout<<"c3:: "<<team_c3->isAlive()<<std::endl;
+        // std::cout<<"c2:: "<<team_c2->isAlive()<<std::endl;
+        // std::cout<<"c1:: "<<team_c1->isAlive()<<std::endl;
 
         // Killing the new captain
         while (team2_c3->isAlive()) {

@@ -75,9 +75,17 @@ void Team::add(Character* character)
 
 void Team::attack(Team* enemy_team)
 {
+    
     if (enemy_team == nullptr)
     {
+
         throw std::invalid_argument("Enemy team is nullptr");
+    }
+
+    if (enemy_team->stillAlive()<=0)
+    {
+        
+        throw std::runtime_error("Enemy team is dead");
     }
 
     if (!this->leader->isAlive()) // Choose the leader
@@ -87,6 +95,23 @@ void Team::attack(Team* enemy_team)
 
         for (auto character : this->characters)
         {
+            if (character->isAlive() && this->leader->distance(character) < closestDistance)
+            {
+                closestDistance = this->leader->distance(character);
+                closestCharacter = character;
+            }
+        }
+
+        this->leader = closestCharacter;
+    }
+
+    if (!enemy_team->leader->isAlive()) // Choose the leader
+    {
+        double closestDistance = std::numeric_limits<double>::max();
+        Character* closestCharacter = nullptr;
+
+        for (auto character : enemy_team->characters)
+        {
             if (character->isAlive() && enemy_team->leader->distance(character) < closestDistance)
             {
                 closestDistance = enemy_team->leader->distance(character);
@@ -94,7 +119,7 @@ void Team::attack(Team* enemy_team)
             }
         }
 
-        this->leader = closestCharacter;
+        enemy_team->leader = closestCharacter;
     }
 
     Point leader_position = leader->getLocation();
@@ -105,7 +130,7 @@ void Team::attack(Team* enemy_team)
 
     for (auto enemyCharacter : enemy_team->characters)
     {
-        if (enemyCharacter->isAlive() && leader->distance(enemyCharacter) < closestDistance)
+        if (enemyCharacter->isAlive() && this->leader->distance(enemyCharacter) < closestDistance)
         {
             closestDistance = leader->distance(enemyCharacter);
             victim = enemyCharacter;
@@ -113,16 +138,62 @@ void Team::attack(Team* enemy_team)
     }
 //////////
 
-    if (victim && victim->isAlive() && this->stillAlive() > 0 && enemy_team->stillAlive() > 0)
+    if (victim && victim->isAlive() &&enemy_team->stillAlive() > 0)
     {
-      
+              bool leaderChanged = (leader->getLocation().getX() != leader_position.getX()) || (leader->getLocation().getY() != leader_position.getY());
+
         for (auto character : characters)
         {
              if (victim && victim->isAlive()&& enemy_team->stillAlive() > 0)
     {
-        bool leaderChanged = (leader->getLocation().getX() != leader_position.getX()) || (leader->getLocation().getY() != leader_position.getY());
+       // bool leaderChanged = (leader->getLocation().getX() != leader_position.getX()) || (leader->getLocation().getY() != leader_position.getY());
 
-        if (!victim->isAlive() || leaderChanged)
+    //     if (!victim->isAlive() || leaderChanged)
+    //     {
+    //         closestDistance = std::numeric_limits<double>::max();
+
+    //  for (auto enemyCharacter : enemy_team->characters)
+    //         {
+    //             if (enemyCharacter->isAlive() && leader->distance(enemyCharacter) < closestDistance)
+    //             {
+    //                 closestDistance = leader->distance(enemyCharacter);
+    //                 victim = enemyCharacter;
+    //             }
+    //         }
+    //     }
+            
+            if (character->isAlive())
+            {
+                Cowboy* cowboy = dynamic_cast<Cowboy*>(character);
+                Ninja* ninja = dynamic_cast<Ninja*>(character);
+
+                if (cowboy)
+                {
+                    if (cowboy->hasboolets() ) // Check if the cowboy has bullets and the victim is alive
+                    {
+                        cowboy->shoot(victim);
+                    }
+                   else if(!cowboy->hasboolets()){
+
+                        cowboy->reload();
+                    }
+                }
+                else if (ninja)
+                {
+                    // Move the ninja towards the victim if the distance is greater than 1 and the victim is alive
+                    if (ninja->distance(victim) >= 1 )
+                    {
+                        ninja->move(victim);
+                    }
+                    else if (ninja->distance(victim) <1) // Perform the attack if the victim is still alive after moving
+                    {
+                        ninja->slash(victim);
+                    }
+                }
+            }
+      
+        }
+    if (!victim->isAlive() || leaderChanged)
         {
             closestDistance = std::numeric_limits<double>::max();
 
@@ -134,39 +205,7 @@ void Team::attack(Team* enemy_team)
                     victim = enemyCharacter;
                 }
             }
-        }
-            
-            if (character->isAlive())
-            {
-                Cowboy* cowboy = dynamic_cast<Cowboy*>(character);
-                Ninja* ninja = dynamic_cast<Ninja*>(character);
-
-                if (cowboy)
-                {
-                    if (cowboy->hasboolets() && victim->isAlive()) // Check if the cowboy has bullets and the victim is alive
-                    {
-                        cowboy->shoot(victim);
-                    }
-                    if(!cowboy->hasboolets()){
-
-                        cowboy->reload();
-                    }
-                }
-                else if (ninja)
-                {
-                    // Move the ninja towards the victim if the distance is greater than 1 and the victim is alive
-                    if (ninja->distance(victim) > 1 && victim->isAlive())
-                    {
-                        ninja->move(victim);
-                    }
-                    if (victim->isAlive()) // Perform the attack if the victim is still alive after moving
-                    {
-                        ninja->slash(victim);
-                    }
-                }
-            }
-        }
-    }
+        }  }
 }
 }
 
@@ -221,6 +260,22 @@ void Team::print()
     }
 }
 
+Character* Team::findClosestCharacter(Character* myLeader) {
+    double minDistance = std::numeric_limits<double>::max();
+    Character* closestCharacter = nullptr;
+
+    for (Character* character : characters) {
+        if (character->isAlive()) { // Add this condition to consider only alive characters
+            double distance = myLeader->distance(character);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestCharacter = character;
+            }
+        }
+    }
+
+    return closestCharacter;
+}
 // for (auto character : characters)
 // {
 //     Cowboy* cowboy = dynamic_cast<Cowboy*>(character);

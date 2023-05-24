@@ -1,21 +1,22 @@
+#include "SmartTeam.hpp"
 
-#include "Team.hpp"
-using namespace ariel;
+namespace ariel {
 
-class SmartTeam : public Team {
-public:
     // Constructor
-    SmartTeam(Character* leader){}
-    SmartTeam(){}
-    // Destructor
-    ~SmartTeam(){}
+    SmartTeam::SmartTeam(Character* leader) : Team(leader) {}
 
-    // Overridden methods from Team
-    void add(Character* character) {}
-    void attack(Team* enemy_team) {}
-    int stillAlive() 
-    {
+    SmartTeam::SmartTeam() : Team() {}
+
+    SmartTeam::~SmartTeam() {}
+
+    void SmartTeam::add(Character* character) {}
+
+    void SmartTeam::attack(Team* enemy_team) {}
+
+    int SmartTeam::stillAlive() {
         return 0;
     }
-    void print() {}
-};
+
+    void SmartTeam::print() {}
+
+} // namespace ariel
